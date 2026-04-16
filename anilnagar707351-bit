@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Deal Store 🛒</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #FF6B00;
+    --gold: #FFB800;
+    --deep: #1A0A3B;
+    --pink: #FF3CAC;
+    --teal: #00C9B1;
+    --card-bg: #fff;
+    --bg: #F7F3FF;
+    --text: #1A0A3B;
+    --muted: #6B6B8A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  .header { background: linear-gradient(135deg, var(--deep) 0%, #3B1A8B 60%, var(--pink) 100%); padding: 28px 20px 22px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; background: rgba(255,184,0,0.18); border-radius: 50%; }
+  .header::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; background: rgba(255,60,172,0.15); border-radius: 50%; }
+  .store-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--saffron)); display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 12px; border: 3px solid rgba(255,255,255,0.4); box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 1; }
+  .store-name { font-family: 'Baloo 2', cursive; font-size: 26px; font-weight: 800; color: #fff; letter-spacing: -0.5px; position: relative; z-index: 1; }
+  .store-tagline { color: rgba(255,255,255,0.75); font-size: 13px; margin-top: 4px; position: relative; z-index: 1; }
+  .deal-badge { display: inline-block; background: var(--gold); color: var(--deep); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-top: 10px; position: relative; z-index: 1; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  .cat-scroll { display: flex; gap: 8px; overflow-x: auto; padding: 14px 16px; scrollbar-width: none; background: #fff; border-bottom: 2px solid #eee; position: sticky; top: 0; z-index: 10; }
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-btn { flex-shrink: 0; padding: 7px 16px; border-radius: 30px; border: 2px solid #E0D8F5; background: transparent; color: var(--muted); font-family: 'Baloo 2', cursive; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .cat-btn.active, .cat-btn:hover { background: var(--deep); border-color: var(--deep); color: #fff; }
+  .cat-btn.active { background: linear-gradient(135deg, var(--saffron), var(--pink)); border-color: transparent; }
+  .products-section { padding: 16px 12px 80px; }
+  .section-title { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 700; color: var(--deep); margin-bottom: 14px; padding-left: 4px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { background: var(--card-bg); border-radius: 18px; overflow: hidden; box-shadow: 0 2px 12px rgba(26,10,59,0.08); transition: transform .2s, box-shadow .2s; cursor: pointer; position: relative; animation: fadeUp .4s ease both; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(26,10,59,0.15); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .card-img { width: 100%; aspect-ratio: 1; object-fit: contain; background: #F9F7FF; padding: 10px; }
+  .card-img-placeholder { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #F0EBFF, #FFE8F5); display: flex; align-items: center; justify-content: center; font-size: 42px; }
+  .card-body { padding: 10px 10px 12px; }
+  .card-cat { font-size: 10px; font-weight: 600; color: var(--saffron); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .card-name { font-family: 'Baloo 2', cursive; font-size: 13px; font-weight: 700; color: var(--deep); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-price { display: flex; align-items: center; gap: 5px; margin: 6px 0; }
+  .price-now { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 800; color: var(--deep); }
+  .price-old { font-size: 11px; color: var(--muted); text-decoration: line-through; }
+  .discount-tag { background: #E8F5E9; color: #2E7D32; font-size: 10px; font-weight: 700; padding: 2px 5px; border-radius: 4px; }
+  .buy-btn { width: 100%; padding: 8px; background: linear-gradient(135deg, var(--saffron), #FF8C00); color: #fff; border: none; border-radius: 10px; font-family: 'Baloo 2', cursive; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .2s; text-decoration: none; display: block; text-align: center; }
+  .buy-btn:hover { opacity: 0.88; }
+  .ribbon { position: absolute; top: 10px; left: 10px; background: var(--pink); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px; z-index: 2; }
+  .empty { grid-column: span 2; text-align: center; padding: 50px 20px; color: var(--muted); }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty h3 { font-family: 'Baloo 2', cursive; color: var(--deep); margin-bottom: 6px; }
+  .fab { position: fixed; bottom: 24px; right: 20px; width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, var(--deep), #3B1A8B); border: none; color: #fff; font-size: 22px; cursor: pointer; box-shadow: 0 4px 18px rgba(26,10,59,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; transition: transform .2s; }
+  .fab:hover { transform: scale(1.1); }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(10,5,30,0.7); z-index: 200; align-items: flex-end; justify-content: center; }
+  .overlay.show { display: flex; }
+  .sheet { background: #fff; border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; padding: 28px 24px 36px; animation: slideUp .3s ease; }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .sheet h2 { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; color: var(--deep); margin-bottom: 6px; }
+  .sheet p { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .input-group { margin-bottom: 14px; }
+  .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--deep); margin-bottom: 6px; }
+  .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 12px 14px; border: 2px solid #E0D8F5; border-radius: 12px; font-family: 'Noto Sans', sans-serif; font-size: 14px; color: var(--deep); outline: none; transition: border-color .2s; background: #F9F7FF; }
+  .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--saffron); }
+  .input-group textarea { resize: vertical; min-height: 70px; }
+  .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--saffron), var(--pink)); color: #fff; border: none; border-radius: 14px; font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity .2s; }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-close { position: absolute; top: 16px; right: 16px; background: #F0EBFF; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; color: var(--deep); display: flex; align-items: center; justify-content: center; }
+  .error-msg { color: #e53935; font-size: 13px; margin-top: 8px; text-align: center; display: none; }
+  .admin-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 300; overflow-y: auto; }
+  .admin-overlay.show { display: block; }
+  .admin-header { background: linear-gradient(135deg, var(--deep), #3B1A8B); padding: 20px 20px 16px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
+  .admin-header h2 { font-family: 'Baloo 2', cursive; color: #fff; font-size: 20px; font-weight: 800; flex: 1; }
+  .btn-logout { background: rgba(255,255,255,0.15); border: none; color: #fff; padding: 7px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; font-family: 'Baloo 2', cursive; font-weight: 600; }
+  .admin-body { padding: 20px; }
+  .admin-add-card { background: #fff; border-radius: 20px; padding: 22px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(26,10,59,0.08); }
+  .admin-add-card h3 { font-family: 'Baloo 2', cursive; font-size: 18px; font-weight: 700; color: var(--deep); margin-bottom: 16px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .admin-list-title { font-family: 'Baloo 2', cursive; font-size: 18px; font-weight: 700; color: var(--deep); margin-bottom: 14px; }
+  .admin-product-item { background: #fff; border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 8px rgba(26,10,59,0.06); }
+  .admin-product-emoji { font-size: 28px; flex-shrink: 0; }
+  .admin-product-info { flex: 1; min-width: 0; }
+  .admin-product-name { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 14px; color: var(--deep); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-product-price { font-size: 13px; color: var(--saffron); font-weight: 600; }
+  .btn-del { background: #FFF0F0; border: none; color: #e53935; width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .tab-bar { display: flex; gap: 0; margin-bottom: 20px; background: #E8E4F5; border-radius: 14px; padding: 4px; }
+  .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; font-family: 'Baloo 2', cursive; font-size: 14px; font-weight: 700; color: var(--muted); cursor: pointer; border-radius: 10px; transition: all .2s; }
+  .tab-btn.active { background: #fff; color: var(--deep); box-shadow: 0 2px 8px rgba(26,10,59,0.1); }
+  .tab-content { display: none; }
+  .tab-content.show { display: block; }
+  .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--deep); color: #fff; padding: 12px 24px; border-radius: 30px; font-family: 'Baloo 2', cursive; font-size: 14px; font-weight: 600; z-index: 999; opacity: 0; transition: opacity .3s; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="store-avatar" id="storeAvatar">🛒</div>
+  <div class="store-name" id="storeName">My Deal Store</div>
+  <div class="store-tagline" id="storeTagline">Best Amazon Deals • Daily Updates</div>
+  <div class="deal-badge">🔥 New Deals Added!</div>
+</div>
+<div class="cat-scroll" id="catScroll"></div>
+<div class="products-section">
+  <div class="section-title">🛍️ Today's Best Deals</div>
+  <div class="grid" id="productsGrid"></div>
+</div>
+<button class="fab" onclick="openLoginSheet()" title="Admin">⚙️</button>
+<div class="toast" id="toast"></div>
+<div class="overlay" id="loginOverlay">
+  <div class="sheet" style="position:relative">
+    <button class="btn-close" onclick="closeLogin()">✕</button>
+    <h2>🔐 Admin Login</h2>
+    <p>Sirf admin ke liye hai</p>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="Password daalo..." onkeydown="if(event.key==='Enter')checkLogin()">
+    </div>
+    <div class="error-msg" id="loginError">❌ Galat password!</div>
+    <button class="btn-primary" onclick="checkLogin()">Login Karo</button>
+  </div>
+</div>
+<div class="admin-overlay" id="adminPanel">
+  <div class="admin-header">
+    <h2>⚙️ Admin Panel</h2>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-add-card" style="margin-bottom:16px">
+      <h3>🏪 Store Settings</h3>
+      <div class="input-group"><label>Store Naam</label><input type="text" id="setStoreName" placeholder="My Deal Store"></div>
+      <div class="input-group"><label>Tagline</label><input type="text" id="setTagline" placeholder="Best Deals..."></div>
+      <div class="two-col">
+        <div class="input-group"><label>Avatar Emoji</label><input type="text" id="setAvatar" placeholder="🛒" maxlength="2"></div>
+        <div></div>
+      </div>
+      <button class="btn-primary" onclick="saveSettings()" style="margin-top:4px">💾 Save Settings</button>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('add')">➕ Add Product</button>
+      <button class="tab-btn" onclick="switchTab('list')">📋 All Products</button>
+    </div>
+    <div class="tab-content show" id="tab-add">
+      <div class="admin-add-card">
+        <h3>➕ New Product Add Karo</h3>
+        <div class="input-group"><label>Product Name *</label><input type="text" id="pName" placeholder="e.g. boAt Airdopes 141"></div>
+        <div class="two-col">
+          <div class="input-group"><label>Price (₹) *</label><input type="number" id="pPrice" placeholder="999"></div>
+          <div class="input-group"><label>Original Price (₹)</label><input type="number" id="pOldPrice" placeholder="1999"></div>
+        </div>
+        <div class="input-group">
+          <label>Category *</label>
+          <select id="pCat">
+            <option value="Electronics">📱 Electronics</option>
+            <option value="Fashion">👗 Fashion</option>
+            <option value="Home & Kitchen">🏠 Home & Kitchen</option>
+            <option value="Beauty">💄 Beauty & Health</option>
+            <option value="Sports">⚽ Sports</option>
+            <option value="Books">📚 Books</option>
+            <option value="Toys">🧸 Toys</option>
+            <option value="Other">🛍️ Other</option>
+          </select>
+        </div>
+        <div class="input-group"><label>Amazon Affiliate Link *</label><input type="url" id="pLink" placeholder="https://amzn.to/..."></div>
+        <div class="input-group"><label>Product Image URL (optional)</label><input type="url" id="pImg" placeholder="https://..."></div>
+        <div class="input-group"><label>Emoji (image nahi hai to)</label><input type="text" id="pEmoji" placeholder="📱" maxlength="2"></div>
+        <button class="btn-primary" onclick="addProduct()">✅ Product Add Karo</button>
+      </div>
+    </div>
+    <div class="tab-content" id="tab-list">
+      <div class="admin-list-title">📋 Saare Products (<span id="pCount">0</span>)</div>
+      <div id="adminProductList"></div>
+    </div>
+  </div>
+</div>
+<script>
+const PASS = 'admin123';
+let products = [];
+let settings = {};
+let currentCat = 'All';
+let isAdmin = false;
+const CAT_ICONS = {'All':'🛍️','Electronics':'📱','Fashion':'👗','Home & Kitchen':'🏠','Beauty':'💄','Sports':'⚽','Books':'📚','Toys':'🧸','Other':'🎁'};
+
+function init() {
+  products = JSON.parse(localStorage.getItem('affiliateProducts') || '[]');
+  settings = JSON.parse(localStorage.getItem('storeSettings') || '{}');
+  if (products.length === 0) {
+    products = [
+      {id:1,name:'boAt Airdopes 141 TWS Earbuds',price:999,oldPrice:3499,cat:'Electronics',link:'#',img:'',emoji:'🎧'},
+      {id:2,name:'Prestige IRIS 750W Mixer Grinder',price:1899,oldPrice:3200,cat:'Home & Kitchen',link:'#',img:'',emoji:'🧃'},
+      {id:3,name:'Nivea Men Face Wash',price:149,oldPrice:200,cat:'Beauty',link:'#',img:'',emoji:'🧴'},
+      {id:4,name:'Fire-Boltt Ninja Smartwatch',price:1299,oldPrice:4999,cat:'Electronics',link:'#',img:'',emoji:'⌚'},
+      {id:5,name:"Levi's Men's Slim T-Shirt",price:449,oldPrice:799,cat:'Fashion',link:'#',img:'',emoji:'👕'},
+      {id:6,name:'Boldfit Yoga Mat Anti Slip',price:399,oldPrice:999,cat:'Sports',link:'#',img:'',emoji:'🧘'},
+    ];
+    saveProducts();
+  }
+  applySettings(); renderCats(); renderProducts();
+}
+function applySettings() {
+  if(settings.storeName){document.getElementById('storeName').textContent=settings.storeName;document.title=settings.storeName;}
+  if(settings.tagline)document.getElementById('storeTagline').textContent=settings.tagline;
+  if(settings.avatar)document.getElementById('storeAvatar').textContent=settings.avatar;
+}
+function getCats(){return['All',...new Set(products.map(p=>p.cat))];}
+function renderCats(){
+  const el=document.getElementById('catScroll');
+  el.innerHTML=getCats().map(c=>`<button class="cat-btn ${c===currentCat?'active':''}" onclick="filterCat('${c}')">${CAT_ICONS[c]||'🏷️'} ${c}</button>`).join('');
+}
+function filterCat(cat){currentCat=cat;renderCats();renderProducts();}
+function renderProducts(){
+  const list=currentCat==='All'?products:products.filter(p=>p.cat===currentCat);
+  const grid=document.getElementById('productsGrid');
+  if(list.length===0){grid.innerHTML=`<div class="empty"><div class="empty-icon">🛍️</div><h3>Koi product nahi mila</h3></div>`;return;}
+  grid.innerHTML=list.map((p,i)=>{
+    const disc=p.oldPrice?Math.round((1-p.price/p.oldPrice)*100):0;
+    return `<div class="card" style="animation-delay:${i*0.07}s">
+      ${disc>=10?`<div class="ribbon">${disc}% OFF</div>`:''}
+      ${p.img?`<img class="card-img" src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:'' }
+      <div class="card-img-placeholder" ${p.img?'style="display:none"':''}>${p.emoji||CAT_ICONS[p.cat]||'🛍️'}</div>
+      <div class="card-body">
+        <div class="card-cat">${CAT_ICONS[p.cat]||''} ${p.cat}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-price">
+          <span class="price-now">₹${p.price.toLocaleString('en-IN')}</span>
+          ${p.oldPrice?`<span class="price-old">₹${p.oldPrice.toLocaleString('en-IN')}</span>`:''}
+          ${disc>=10?`<span class="discount-tag">${disc}% off</span>`:''}
+        </div>
+        <a class="buy-btn" href="${p.link}" target="_blank">🛒 Amazon pe Buy Karo</a>
+      </div></div>`;
+  }).join('');
+}
+function openLoginSheet(){if(isAdmin){openAdminPanel();return;}document.getElementById('loginOverlay').classList.add('show');setTimeout(()=>document.getElementById('adminPass').focus(),300);}
+function closeLogin(){document.getElementById('loginOverlay').classList.remove('show');document.getElementById('adminPass').value='';document.getElementById('loginError').style.display='none';}
+function checkLogin(){
+  if(document.getElementById('adminPass').value===PASS){isAdmin=true;closeLogin();openAdminPanel();}
+  else{document.getElementById('loginError').style.display='block';document.getElementById('adminPass').value='';document.getElementById('adminPass').focus();}
+}
+function openAdminPanel(){
+  document.getElementById('adminPanel').classList.add('show');
+  document.getElementById('setStoreName').value=settings.storeName||'';
+  document.getElementById('setTagline').value=settings.tagline||'';
+  document.getElementById('setAvatar').value=settings.avatar||'';
+  renderAdminList();
+}
+function logout(){isAdmin=false;document.getElementById('adminPanel').classList.remove('show');showToast('Logout ho gaye! 👋');}
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['add','list'][i]===tab));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('show'));
+  document.getElementById('tab-'+tab).classList.add('show');
+  if(tab==='list')renderAdminList();
+}
+function addProduct(){
+  const name=document.getElementById('pName').value.trim();
+  const price=parseFloat(document.getElementById('pPrice').value);
+  const oldPrice=parseFloat(document.getElementById('pOldPrice').value)||null;
+  const cat=document.getElementById('pCat').value;
+  const link=document.getElementById('pLink').value.trim();
+  const img=document.getElementById('pImg').value.trim();
+  const emoji=document.getElementById('pEmoji').value.trim()||CAT_ICO
